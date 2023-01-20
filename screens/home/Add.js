@@ -128,7 +128,7 @@ const Add = (data, formClear) => {
 					value={name}
 					onChangeText={(text) => handleName(text)}
 				/>
-				<View style={{ alignSelf: "center" }}>
+				<View style={Platform.OS === 'ios' ? { marginTop: "7%", alignSelf: "center" , zIndex: 10}: { marginTop: "7%", alignSelf: "center" }}>
 					<DropDownPicker
 						open={open}
 						setOpen={setOpen}
@@ -136,7 +136,6 @@ const Add = (data, formClear) => {
 						items={items}
 						setValue={setFrequency}
 						setItems={setItems}
-						style={styles.input}
 						placeholder="Select"
 						placeholderStyle={{
 							color: "grey",
@@ -218,7 +217,7 @@ const styles = StyleSheet.create({
 	pot: {
 		height: "10%",
 		resizeMode: "contain",
-		top: "46.5%",
+		top: "38%",
 	},
 	bottomMenu: {
 		height: "20%",
@@ -260,7 +259,7 @@ const styles = StyleSheet.create({
 		width: "90%",
 		alignItems: "center",
 		position: "absolute",
-		bottom: 0,
+		bottom: 100,
 	},
 	input: {
 		backgroundColor: "white",

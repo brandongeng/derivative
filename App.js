@@ -8,6 +8,7 @@ import { app } from "./firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState, useCallback } from "react";
 import Home from "./screens/home/Home";
+import NavBar from "./screens/home/NavBar";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
@@ -97,13 +98,7 @@ export default function App() {
 					/>
 				</Stack.Navigator>
 			) : (
-				<Stack.Navigator>
-					<Stack.Screen
-						name="home"
-						component={Home}
-						options={{ headerShown: false }}
-					/>
-				</Stack.Navigator>
+				<NavBar/>
 			)}
 		</NavigationContainer>
 	);
