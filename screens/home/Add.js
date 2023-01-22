@@ -7,11 +7,13 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	Image,
 	TextInput,
 } from "react-native";
 import { getAuth } from "firebase/auth";
-import { getDatabase } from "firebase/database";
 import { app } from "../../firebase";
+import { getDatabase, push, ref } from "firebase/database";
+
 const auth = getAuth(app);
 const database = getDatabase(app);
 
@@ -40,6 +42,30 @@ const Add = (data, formClear) => {
 	const handleDescription = (text) => {
 		data.handleForm("description", text);
 		setDescription(text);
+	};
+
+	const appendHabit = (
+		HabitName,
+		Frequency,
+		Description,
+		Reminders,
+	) => {
+		if (HabitName !== "" && Frequency !== []) {
+			for (let i = 0; i < Frequency.length; i++) {
+				let temp = Frequency[i];
+				Frequency[i] = [temp, 0];
+			}
+			const uid = auth.currentUser.uid;
+			push(ref(database, "users/" + uid + "/habits/"), {
+				habitName: HabitName,
+				streakNumber: 0,
+				reminders: Reminders,
+				description: Description,
+				frequency: Frequency,
+				type: "habit",
+				completed: {},
+			});
+		}
 	};
 
 	useEffect(() => {
@@ -160,6 +186,29 @@ const Add = (data, formClear) => {
 						</Text>
 					</TouchableOpacity>
 				</View>
+				<View style={{width: "100%", marginTop: 20}}>
+					<TouchableOpacity
+						style={{
+							backgroundColor: colors.background,
+							width: "100%",
+							height: "45%",
+							justifyContent: 'center',
+							borderRadius: 10,
+							alignItems: "center",
+							borderWidth: 1,
+						}}
+						onPress={() =>
+							data.appendHabit(
+								name,
+								frequency,
+								description,
+								reminder
+							)
+						}
+					>
+						<Text style={styles.headerText}>New Plant</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		</View>
 	);
@@ -259,7 +308,7 @@ const styles = StyleSheet.create({
 		width: "90%",
 		alignItems: "center",
 		position: "absolute",
-		bottom: 100,
+		bottom: 40
 	},
 	input: {
 		backgroundColor: "white",

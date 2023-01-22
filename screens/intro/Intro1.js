@@ -2,6 +2,7 @@ import {
 	StyleSheet,
 	Text,
 	View,
+	SafeAreaView,
 	Image,
 	FlatList,
 	Dimensions,
@@ -159,10 +160,10 @@ const Intro1 = () => {
 	},[])*/
 
 	return (
-		<View style={styles.pageContainer}>
+		<SafeAreaView style={styles.pageContainer}>
 			<FlatList
 				data={slideData}
-				style={{ flex: 1 }}
+				style={{ flex: 1, height: "90%", bottom: 60}}
 				pagingEnabled
 				horizontal
 				showsHorizontalScrollIndicator={false}
@@ -180,7 +181,7 @@ const Intro1 = () => {
 					);
 				})}
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 };
 
@@ -220,15 +221,15 @@ const styles = StyleSheet.create({
 		width: "80%",
 		height: undefined,
 		resizeMode: "contain",
-		aspectRatio: 1,
-		marginTop: 30,
+		aspectRatio: windowHeight > 700 ? 1 : 1.5,
+		marginTop: 20,
 		marginBottom: 20,
 	},
 	imageLogo: {
 		width: "50%",
 		height: undefined,
 		resizeMode: "contain",
-		aspectRatio: 1,
+		aspectRatio: windowHeight > 700 ? 1 : 1.5,
 		marginTop: "15%",
 		marginBottom: "15%",
 	},

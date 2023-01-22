@@ -6,6 +6,7 @@ import {
 	TouchableOpacity,
 	View,
 	Image,
+	Text,
 	KeyboardAvoidingView,
 } from "react-native";
 import { app } from "../../firebase";
@@ -320,7 +321,8 @@ const Home = () => {
 				/>
 				<View style={{ height: "10%" }} />
 			</Animated.View>
-			<View style={styles.bottomContainer}></View>
+			<View style={styles.bottomContainer}>
+			</View>
 		</KeyboardAvoidingView>
 	);
 };
@@ -348,9 +350,8 @@ const styles = StyleSheet.create({
 	bottomContainer: {
 		flex: 1,
 		width: "100%",
-		backgroundColor: "white",
+		alignItems: "center",
 		justifyContent: "flex-end",
-		alignContent: "center",
 	},
 	headerText: {
 		color: colors.text,
