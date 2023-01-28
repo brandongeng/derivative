@@ -3,13 +3,33 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	View,
+    Text,
 	Image,
 	KeyboardAvoidingView,
 } from "react-native";
+import { getAuth } from "firebase/auth";
+import { app } from "../../firebase";
 
 
+const auth = getAuth(app);
 const Room = () => {
-{/* <View style={styles.bottomContainer}>
+    const handleSignOut = () => {
+		auth.signOut()
+			.then(() => {
+				navigation.replace("Login");
+			})
+			.catch((error) => alert(error.message));
+	};
+    return(
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+        <TouchableOpacity
+            style={{backgroundColor: 'gray', height: '20%', width: '20%'}}
+            onPress={() => handleSignOut()}
+        >
+        </TouchableOpacity>
+    </View>
+    );
+    {/* <View style={styles.bottomContainer}>
             <View style={styles.bottomMenu}>
                 <View
                     style={{

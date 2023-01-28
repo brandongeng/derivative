@@ -7,6 +7,7 @@ import {
 	KeyboardAvoidingView,
 } from "react-native";
 import Home from './Home';
+import Gallery from './Gallery';
 import Room from './Room';
 
 const Tab = createBottomTabNavigator();
@@ -42,7 +43,34 @@ export default function NavBar() {
                 headerShown: false
             }}
         />
-        <Tab.Screen name="Settings" component={Room} 
+        <Tab.Screen name="Gallery" component={Gallery} 
+            options={{
+                tabBarIcon: ({ focused }) => (
+                    <View
+                        style={{
+                            height: "80%",
+                            width: "50%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                            <Image
+                                source={require("../../assets/potted_plant.png")}
+                                style={{
+                                    height: "100%",
+                                    width: undefined,
+                                    aspectRatio: 1,
+                                    resizeMode: "contain",
+                                }}
+                            />
+                        
+                    </View>
+                ),
+                tabBarShowLabel: false,
+                headerShown: false
+            }}
+        />
+        <Tab.Screen name="Room" component={Room} 
             options={{
                 tabBarIcon: ({ focused }) => (
                     <View

@@ -264,9 +264,9 @@ const styles = StyleSheet.create({
 		resizeMode: "contain",
 	},
 	pot: {
-		height: "10%",
+		height: "8%",
 		resizeMode: "contain",
-		top: "38%",
+		top: "40%",
 	},
 	bottomMenu: {
 		height: "20%",

@@ -13,7 +13,7 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Habit = (data) => {
-	const streakText = ["Complete this task often to build your streak"];
+	const streakText = ["Complete this task often\n to build your streak"];
 	const statusText = [
 		"Getting Started",
 		"Budding",
@@ -52,8 +52,6 @@ const Habit = (data) => {
 					styles.pot,
 					{
 						transform: [{ translateY: data.animation }],
-						height: "12%",
-						top: "44.5%",
 					},
 				]}
 				source={require("../../assets/images/pots/sunflower/sunflower1.png")}
@@ -91,7 +89,7 @@ const Habit = (data) => {
 							/>
 							<Text style={{ fontFamily: "Jost", fontSize: 18 }}>
 								{data.streakNumber}{" "}
-								{data.streakNumber === 1 ? " Day" : " Days"}
+								{data.streakNumber === 1 ? "Day" : "Days"}
 							</Text>
 							<Text
 								style={{
@@ -278,7 +276,7 @@ const styles = StyleSheet.create({
 	pot: {
 		height: "10%",
 		resizeMode: "contain",
-		top: "46.5%",
+		top: "38%",
 	},
 	bottomMenu: {
 		height: "20%",
@@ -320,7 +318,7 @@ const styles = StyleSheet.create({
 		width: "90%",
 		alignItems: "center",
 		position: "absolute",
-		bottom: 0,
+		bottom: 40,
 	},
 	input: {
 		backgroundColor: "white",
