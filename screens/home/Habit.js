@@ -1,18 +1,22 @@
-import React from "react";
-import { Animated, Dimensions,  } from "react-native";
-import {
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-	Image,
-} from "react-native";
+import React, { useEffect } from "react";
+import { Animated, Dimensions } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { colors } from "../../style/colors";
+import { getAuth } from "firebase/auth";
+import { app } from "../../firebase";
+import { getDatabase, update, ref } from "firebase/database";
+import { duration } from "moment";
+
+const database = getDatabase(app);
+const auth = getAuth(app);
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Habit = (data) => {
+	useEffect(() => {
+		console.log("freq: ", data);
+	}, []);
 	const streakText = ["Complete this task often\n to build your streak"];
 	const statusText = [
 		"Getting Started",
@@ -21,14 +25,57 @@ const Habit = (data) => {
 		"Established",
 		"Influential",
 	];
-	const dotStyle = (frequency) => {
-		let backgroundColor;
-		if (frequency[0] == 0) {
-			backgroundColor = "#D3D3D3";
-		} else if (frequency[0] !== 0 && frequency[1] == 0) {
-			backgroundColor = "transparent";
+
+	const handleComplete = () => {
+		console.log(data.completed);
+		const updates = {};
+		const uid = auth.currentUser.uid;
+		var today = new Date();
+		today.setHours(0, 0, 0, 0);
+		let updateCompleted = {};
+		if (!data.completed) {
+			updateCompleted[today] = 1;
 		} else {
+			updateCompleted = data.completed;
+			updateCompleted[today] = (updateCompleted[today] || 1) + 1;
+		}
+		updates["/users/" + uid + "/habits/" + data.key + "/completed/"] =
+			updateCompleted;
+		console.log(updateCompleted);
+		return update(ref(database), updates);
+	};
+
+	function handleStreak() {
+		let day = new Date();
+		day.setHours(0, 0, 0, 0);
+		let count = 0;
+		if (day.toString() in data.completed) {
+			count++;
+		}
+		day.setDate(day.getDate() - 1);
+		while (day.toString() in data.completed) {
+			count++;
+			day.setDate(day.getDate() - 1);
+		}
+		return count;
+	}
+
+	function thisWeekDay(day) {
+		let now = new Date();
+		now.setHours(0, 0, 0, 0);
+		now.setDate(now.getDate() - now.getDay() + day);
+		return now;
+	}
+
+	const dotStyle = (frequency, id) => {
+		let backgroundColor;
+		const day = thisWeekDay(id).toString();
+		if (frequency == 0) {
+			backgroundColor = "#D3D3D3";
+		} else if (frequency !== 0 && data.completed && day in data.completed) {
 			backgroundColor = colors.text;
+		} else {
+			backgroundColor = "transparent";
 		}
 		return {
 			borderWidth: 1,
@@ -39,6 +86,7 @@ const Habit = (data) => {
 			backgroundColor: backgroundColor,
 		};
 	};
+
 	return (
 		<View
 			style={{
@@ -68,8 +116,8 @@ const Habit = (data) => {
 					{data.habitName}
 				</Text>
 			</Animated.View>
-			<View style={[styles.menuContainer, { height: "32.5%" }]}>
-				<View style={[styles.twoColumn, { height: "100%" }]}>
+			<View style={[styles.menuContainer, { height: "37.5%" }]}>
+				<View style={[styles.twoColumn, { height: "80%" }]}>
 					<View style={styles.column}>
 						<View
 							style={[
@@ -88,8 +136,8 @@ const Habit = (data) => {
 								style={{ height: "40%", resizeMode: "contain" }}
 							/>
 							<Text style={{ fontFamily: "Jost", fontSize: 18 }}>
-								{data.streakNumber}{" "}
-								{data.streakNumber === 1 ? "Day" : "Days"}
+								{handleStreak()}
+								{data.streakNumber === 1 ? " Day" : " Days"}
 							</Text>
 							<Text
 								style={{
@@ -198,7 +246,9 @@ const Habit = (data) => {
 									];
 									return (
 										<View style={{ width: "10%" }}>
-											<View style={dotStyle(item)}></View>
+											<View
+												style={dotStyle(item, id)}
+											></View>
 											<Text
 												style={{ textAlign: "center" }}
 											>
@@ -218,6 +268,26 @@ const Habit = (data) => {
 							<Text style={styles.buttonText}>Edit</Text>
 						</TouchableOpacity>
 					</View>
+				</View>
+				<View style={{ width: "100%", marginTop: 20 }}>
+					<TouchableOpacity
+						style={{
+							backgroundColor: colors.background,
+							width: "100%",
+							height: "45%",
+							justifyContent: "center",
+							borderRadius: 10,
+							alignItems: "center",
+							borderWidth: 1,
+						}}
+						onPress={() => handleComplete()}
+						disabled={
+							data.completed &&
+							new Date().toString() in data.completed
+						}
+					>
+						<Text style={styles.headerText}>Complete Habit</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		</View>
@@ -361,4 +431,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Habit
+export default Habit;

@@ -95,7 +95,6 @@ const Gallery = () => {
 		);
 		onValue(habitRef, (snapshot) => {
 			const data = snapshot.val();
-			console.log(data);
 			let toHabit = [
 			];
 			for (const key in data) {

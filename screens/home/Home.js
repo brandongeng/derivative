@@ -139,7 +139,8 @@ const Home = () => {
 			handleForm: handleForm,
 			formData: formData,
 			setFormClear: setFormClear,
-			completed: {}
+			completed: {},
+			appendHabit: appendHabit,
 		},
 	]);
 
@@ -151,10 +152,6 @@ const Home = () => {
 		Animation
 	) => {
 		if (HabitName !== "" && Frequency !== []) {
-			for (let i = 0; i < Frequency.length; i++) {
-				let temp = Frequency[i];
-				Frequency[i] = [temp, 0];
-			}
 			const toAdd = {
 				animation: Animation,
 				habitName: HabitName,
@@ -200,11 +197,13 @@ const Home = () => {
 			];
 			for (const key in data) {
 				data[key]["animation"] = animation;
+				data[key]["key"] = key
 				toHabit.push(data[key]);
 			}
 			console.log("loaded");
 			setHabitData(toHabit);
 		});
+		console.log(habitData)
 	}, []);
 
 	/* Notifications */
@@ -239,51 +238,13 @@ const Home = () => {
 				return;
 			}
 			token = (await Notifications.getExpoPushTokenAsync()).data;
-			console.log(token);
+			
 		} else {
 			alert("Must use physical device for Push Notifications");
 		}
 
 		return token;
 	}
-
-	async function schedulePushNotification() {
-		await Notifications.scheduleNotificationAsync({
-			content: {
-				title: "You've got mail! 📬",
-				body: "Here is the notification body",
-				data: { data: "goes here" },
-			},
-			trigger: { seconds: 2 },
-		});
-	}
-
-	useEffect(() => {
-		registerForPushNotificationsAsync().then((token) =>
-			setExpoPushToken(token)
-		);
-
-		notificationListener.current =
-			Notifications.addNotificationReceivedListener((notification) => {
-				setNotification(notification);
-			});
-
-		responseListener.current =
-			Notifications.addNotificationResponseReceivedListener(
-				(response) => {
-					console.log(response);
-				}
-			);
-
-		return () => {
-			Notifications.removeNotificationSubscription(
-				notificationListener.current
-			);
-			Notifications.removeNotificationSubscription(
-				responseListener.current
-			);
-		};
-	}, []);
 
 	return (
 		<KeyboardAvoidingView style={styles.container} behavior="height">

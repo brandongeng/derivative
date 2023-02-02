@@ -44,17 +44,8 @@ const Add = (data, formClear) => {
 		setDescription(text);
 	};
 
-	const appendHabit = (
-		HabitName,
-		Frequency,
-		Description,
-		Reminders,
-	) => {
+	const appendHabit = (HabitName, Frequency, Description, Reminders) => {
 		if (HabitName !== "" && Frequency !== []) {
-			for (let i = 0; i < Frequency.length; i++) {
-				let temp = Frequency[i];
-				Frequency[i] = [temp, 0];
-			}
 			const uid = auth.currentUser.uid;
 			push(ref(database, "users/" + uid + "/habits/"), {
 				habitName: HabitName,
@@ -63,7 +54,7 @@ const Add = (data, formClear) => {
 				description: Description,
 				frequency: Frequency,
 				type: "habit",
-				completed: {},
+				completed: false,
 			});
 		}
 	};
@@ -154,7 +145,17 @@ const Add = (data, formClear) => {
 					value={name}
 					onChangeText={(text) => handleName(text)}
 				/>
-				<View style={Platform.OS === 'ios' ? { marginTop: "7%", alignSelf: "center" , zIndex: 10}: { marginTop: "7%", alignSelf: "center" }}>
+				<View
+					style={
+						Platform.OS === "ios"
+							? {
+									marginTop: "7%",
+									alignSelf: "center",
+									zIndex: 10,
+							  }
+							: { marginTop: "7%", alignSelf: "center" }
+					}
+				>
 					<DropDownPicker
 						open={open}
 						setOpen={setOpen}
@@ -186,27 +187,22 @@ const Add = (data, formClear) => {
 						</Text>
 					</TouchableOpacity>
 				</View>
-				<View style={{width: "100%", marginTop: 20}}>
+				<View style={{ width: "100%", marginTop: 20 }}>
 					<TouchableOpacity
 						style={{
 							backgroundColor: colors.background,
 							width: "100%",
 							height: "45%",
-							justifyContent: 'center',
+							justifyContent: "center",
 							borderRadius: 10,
 							alignItems: "center",
 							borderWidth: 1,
 						}}
 						onPress={() =>
-							data.appendHabit(
-								name,
-								frequency,
-								description,
-								reminder
-							)
+							appendHabit(name, frequency, description, reminder)
 						}
 					>
-						<Text style={styles.headerText}>New Plant</Text>
+						<Text style={styles.headerText}>New Habit</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -308,7 +304,7 @@ const styles = StyleSheet.create({
 		width: "90%",
 		alignItems: "center",
 		position: "absolute",
-		bottom: 40
+		bottom: 40,
 	},
 	input: {
 		backgroundColor: "white",

@@ -11,8 +11,10 @@ import {
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { colors } from "../../style/colors";
 import { useNavigation } from "@react-navigation/native";
-import { signInAnonymously } from "firebase/auth";
-import { auth } from "../../firebase";
+import { signInAnonymously, getAuth } from "firebase/auth";
+import { app } from "../../firebase";
+
+const auth = getAuth(app);
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -107,7 +109,7 @@ const Slide = ({ data }) => {
 				/>
 				<TouchableOpacity
 					style={styles.button}
-					onPress={() => handleGetStarted(navigation)}
+					onPress={() => handleGetStarted()}
 				>
 					<Text style={styles.buttonText}>Get Started</Text>
 				</TouchableOpacity>
