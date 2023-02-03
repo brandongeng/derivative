@@ -26,6 +26,7 @@ const Slide = ({ data }) => {
 	if (data.type != null) {
 		return Habit(data);
 	} else {
+		console.log("DATA NOT FOUND")
 		return (
 			<View style={{flex: 1, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
 				<Text>
@@ -105,7 +106,7 @@ const Gallery = () => {
 			setHabitData(toHabit);
 		});
 	}, []);
-
+	console.log(habitData.length)
 	return (
 		<KeyboardAvoidingView style={styles.container} behavior="height">
 			<FlatList
@@ -142,6 +143,8 @@ const Gallery = () => {
 				<View style={{ height: "10%" }} />
 			</Animated.View>
 			<View style={styles.bottomContainer}>
+				{habitData.length == 0 ?
+				 <Text style={styles.headerText}>looking a bit empty here...</Text> : null}
 			</View>
 		</KeyboardAvoidingView>
 	);
@@ -171,7 +174,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: "100%",
 		alignItems: "center",
-		justifyContent: "flex-end",
+		justifyContent: "center",
 	},
 	headerText: {
 		color: colors.text,

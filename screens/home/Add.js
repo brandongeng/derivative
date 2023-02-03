@@ -24,7 +24,7 @@ const Add = (data, formClear) => {
 	const [frequency, setFrequency] = useState([]);
 	const [items, setItems] = useState([
 		{ label: "Twice a Day", value: [2, 2, 2, 2, 2, 2, 2] },
-		{ label: "Every Day", value: [1, 1, 1, 1, 1, 1] },
+		{ label: "Every Day", value: [1, 1, 1, 1, 1, 1, 1] },
 		{ label: "Every Other Day", value: [1, 0, 1, 0, 1, 0, 1] },
 		{ label: "Custom", value: [-1] },
 	]);
@@ -47,7 +47,8 @@ const Add = (data, formClear) => {
 	const appendHabit = (HabitName, Frequency, Description, Reminders) => {
 		if (HabitName !== "" && Frequency !== []) {
 			const uid = auth.currentUser.uid;
-			push(ref(database, "users/" + uid + "/habits/"), {
+			const key = push(ref(database, "users/" + uid + "/habits/"), {
+				uniqueKey: 0,
 				habitName: HabitName,
 				streakNumber: 0,
 				reminders: Reminders,
@@ -55,7 +56,8 @@ const Add = (data, formClear) => {
 				frequency: Frequency,
 				type: "habit",
 				completed: false,
-			});
+			}).key;
+			set(ref(database, "/users/" + uid + "/habits/" + key + "/uniqueKey/"), key)
 		}
 	};
 

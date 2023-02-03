@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { colors } from "../../style/colors";
 import { getAuth } from "firebase/auth";
 import { app } from "../../firebase";
-import { getDatabase, update, ref } from "firebase/database";
+import { getDatabase, update, ref, set } from "firebase/database";
 import { duration } from "moment";
 
 const database = getDatabase(app);
@@ -25,9 +25,8 @@ const Habit = (data) => {
 		"Established",
 		"Influential",
 	];
-
+	
 	const handleComplete = () => {
-		console.log(data.completed);
 		const updates = {};
 		const uid = auth.currentUser.uid;
 		var today = new Date();
@@ -41,14 +40,17 @@ const Habit = (data) => {
 		}
 		updates["/users/" + uid + "/habits/" + data.key + "/completed/"] =
 			updateCompleted;
-		console.log(updateCompleted);
-		return update(ref(database), updates);
+		console.log(data.key)
+		//set(ref(database, "/users/" + uid + "/habits/" + data.key + "/completed/"), updateCompleted)
 	};
 
 	function handleStreak() {
 		let day = new Date();
 		day.setHours(0, 0, 0, 0);
 		let count = 0;
+		if (!data.completed) {
+			return count;
+		}
 		if (day.toString() in data.completed) {
 			count++;
 		}
