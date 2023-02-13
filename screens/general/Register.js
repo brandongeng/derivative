@@ -30,7 +30,6 @@ const Register = () => {
 	const navigation = useNavigation();
 
 	const handleSignUp = () => {
-		console.log("OIII")
 		if (validateEmail(email)) {
 			createUserWithEmailAndPassword(auth, email, password)
 				.then((userCredentials) => {

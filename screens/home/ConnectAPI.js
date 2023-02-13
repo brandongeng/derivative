@@ -20,7 +20,7 @@ import { colors } from "../../style/colors";
 
 const auth = getAuth(app);
 
-const Room = () => {
+const ConnectAPI = () => {
     const [googleaccessToken, setGoogleAccessToken] = React.useState(null);
     const [totalHP, setTotalHP] = React.useState(0);
 
@@ -171,4 +171,4 @@ const Room = () => {
     });
 
 
-export default Room;
+export default ConnectAPI;

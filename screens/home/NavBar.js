@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import Home from "./Home";
 import Gallery from "./Gallery";
-import Room from "./Room";
+import ConnectAPI from "./ConnectAPI";
+import Settings from "./Settings";
 import { getAuth } from "firebase/auth";
 import { app } from "../../firebase";
 import { useNavigation } from "@react-navigation/core";
@@ -85,8 +86,8 @@ export default function NavBar() {
 				}}
 			/>
 			<Tab.Screen
-				name="Room"
-				component={Room}
+				name="ConnectAPI"
+				component={ConnectAPI}
 				options={{
 					tabBarIcon: ({ focused }) => (
 						<View
@@ -99,6 +100,34 @@ export default function NavBar() {
 						>
 							<Image
 								source={require("../../assets/plant_home.png")}
+								style={{
+									height: "100%",
+									width: undefined,
+									aspectRatio: 1,
+									resizeMode: "contain",
+								}}
+							/>
+						</View>
+					),
+					tabBarShowLabel: false,
+					headerShown: false,
+				}}
+			/>
+			<Tab.Screen
+				name="Settings"
+				component={Settings}
+				options={{
+					tabBarIcon: ({ focused }) => (
+						<View
+							style={{
+								height: "80%",
+								width: "50%",
+								justifyContent: "center",
+								alignItems: "center",
+							}}
+						>
+							<Image
+								source={require("../../assets/plant_icon_settings.png")}
 								style={{
 									height: "100%",
 									width: undefined,

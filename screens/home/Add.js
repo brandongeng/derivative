@@ -45,7 +45,8 @@ const Add = (data, formClear) => {
 	};
 
 	const appendHabit = (HabitName, Frequency, Description, Reminders) => {
-		if (HabitName !== "" && Frequency !== []) {
+		if (HabitName !== "" && Frequency.length != 0) {
+			console.log("Frequency is:", Frequency); 
 			const uid = auth.currentUser.uid;
 			const key = push(ref(database, "users/" + uid + "/habits/"), {
 				uniqueKey: 0,
